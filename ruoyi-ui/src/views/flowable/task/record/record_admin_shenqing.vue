@@ -69,7 +69,31 @@
                   </el-descriptions-item>
                   <el-descriptions-item v-if="item.comment" label-class-name="my-label">
                     <template slot="label"><i class="el-icon-tickets"></i>处理意见</template>
-                    {{item.comment.comment}}
+                    {{item.comment}}
+                  </el-descriptions-item>
+                  <el-descriptions-item v-if="item.commentData.calculatorId" label-class-name="my-label">
+                    <template slot="label"><i class="el-icon-tickets"></i>计费员</template>
+                    {{item.comment.calculatorId}}
+                  </el-descriptions-item>
+                  <el-descriptions-item v-if="item.commentData.reviewerId" label-class-name="my-label">
+                    <template slot="label"><i class="el-icon-tickets"></i>复核员</template>
+                    {{item.comment.reviewerId}}
+                  </el-descriptions-item>
+                  <el-descriptions-item v-if="item.commentData.amount" label-class-name="my-label">
+                    <template slot="label"><i class="el-icon-tickets"></i>应付金额</template>
+                    {{item.comment.amount}}
+                  </el-descriptions-item>
+                  <el-descriptions-item v-if="item.commentData.calculatorComment" label-class-name="my-label">
+                    <template slot="label"><i class="el-icon-tickets"></i>计费员备注</template>
+                    {{item.comment.calculatorComment}}
+                  </el-descriptions-item>
+                  <el-descriptions-item v-if="item.commentData.reviewerComment" label-class-name="my-label">
+                    <template slot="label"><i class="el-icon-tickets"></i>审核员备注</template>
+                    {{item.comment.reviewerComment}}
+                  </el-descriptions-item>
+                  <el-descriptions-item v-if="item.commentData.applicantComment" label-class-name="my-label">
+                    <template slot="label"><i class="el-icon-tickets"></i>船代备注</template>
+                    {{item.comment.applicantComment}}
                   </el-descriptions-item>
                 </el-descriptions>
 
@@ -148,22 +172,36 @@
         </el-form-item>
 
 
-        <el-form-item label="处理意见" prop="comment" :rules="[{ required: true, message: '请输入处理意见', trigger: 'blur' }]">
-          <el-input type="textarea" v-model="taskForm.comment" placeholder="请输入处理意见"/>
+        <el-form-item label="计费员" prop="field101" v-if="taskName === `管理员审批`">
+          <el-select v-model="taskForm.commentData.calculatorId" placeholder="请选择计费员" clearable :style="{width: '100%'}">
+            <el-option v-for="(item, index) in field101Options" :key="index" :label="item.label"
+                       :value="item.value" :disabled="item.disabled"></el-option>
+          </el-select>
         </el-form-item>
-<!--        <el-form-item label="计费员" prop="field101">-->
-<!--          <el-select v-model="formData.field101" placeholder="请选择计费员" clearable :style="{width: '100%'}">-->
-<!--            <el-option v-for="(item, index) in field101Options" :key="index" :label="item.label"-->
-<!--                       :value="item.value" :disabled="item.disabled"></el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
 
-<!--          <el-form-item label="复核员" prop="field103">-->
-<!--            <el-select v-model="formData.field103" placeholder="请选择复核员" clearable :style="{width: '100%'}">-->
-<!--              <el-option v-for="(item, index) in field103Options" :key="index" :label="item.label"-->
-<!--                         :value="item.value" :disabled="item.disabled"></el-option>-->
-<!--            </el-select>-->
-<!--          </el-form-item>-->
+          <el-form-item label="复核员" prop="field103" v-if="taskName === `管理员审批`">
+            <el-select v-model="taskForm.commentData.reviewerId" placeholder="请选择复核员" clearable :style="{width: '100%'}">
+              <el-option v-for="(item, index) in field103Options" :key="index" :label="item.label"
+                         :value="item.value" :disabled="item.disabled"></el-option>
+            </el-select>
+          </el-form-item>
+
+        <el-form-item label="应付金额" prop="field101" v-if="taskName === `计费员计费`">
+          <el-input-number v-model="taskForm.commentData.amount"  :min="0"  label="请输入应付金额"></el-input-number>
+        </el-form-item>
+
+        <el-form-item label="计费员处理意见" prop="comment" :rules="[{ required: true, message: '请输入处理意见', trigger: 'blur' }]" v-if="taskName === `计费员计费`">
+          <el-input type="textarea" v-model="taskForm.commentData.calculatorComment" placeholder="请输入处理意见"/>
+        </el-form-item>
+
+
+        <el-form-item label="审批员处理意见" prop="comment" :rules="[{ required: true, message: '请输入处理意见', trigger: 'blur' }]" v-if="taskName === `复核员复核`">
+          <el-input type="textarea" v-model="taskForm.commentData.reviewerComment" placeholder="请输入处理意见"/>
+        </el-form-item>
+
+        <el-form-item label="船代处理意见" prop="comment" :rules="[{ required: true, message: '请输入处理意见', trigger: 'blur' }]" v-if="taskName === `船代确认`">
+          <el-input type="textarea" v-model="taskForm.commentData.applicantComment" placeholder="请输入处理意见"/>
+        </el-form-item>
 
 
       </el-form>
@@ -236,6 +274,7 @@
           field101: undefined,
           field103: undefined,
         },
+
         rules: {
           field101: [{
             required: true,
@@ -287,15 +326,28 @@
         flowRecordList: [], // 流程流转数据
         formConfCopy: {},
         src: null,
-        rules: {}, // 表单校验
         variablesForm: {}, // 流程变量数据
+        // 管理员审批 计费员计费 复核员复核 船代确认
+        taskName : "",
         taskForm:{
           returnTaskShow: false, // 是否展示回退表单
           delegateTaskShow: false, // 是否展示回退表单
           defaultTaskShow: true, // 默认处理
           sendUserShow: false, // 审批用户
           multiple: false,
-          comment:"", // 意见内容
+          commentData :{
+            // 管理员
+            calculatorId: undefined,
+            reviewerId:undefined,
+            // 计费员
+            amount:null,
+            calculatorComment : "",
+            // 复核员
+            reviewerComment:"",
+            // 船代
+            applicantComment:"",
+          },
+          comment:"",
           procInsId: "", // 流程实例编号
           instanceId: "", // 流程实例编号
           deployId: "",  // 流程定义编号
@@ -324,6 +376,8 @@
       };
     },
     created() {
+      this.taskName = this.$route.query && this.$route.query.taskName;
+
       this.taskForm.deployId = this.$route.query && this.$route.query.deployId;
       this.taskForm.taskId  = this.$route.query && this.$route.query.taskId;
       this.taskForm.procInsId = this.$route.query && this.$route.query.procInsId;

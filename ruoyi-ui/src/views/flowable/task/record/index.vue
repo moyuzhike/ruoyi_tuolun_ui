@@ -292,7 +292,6 @@ export default {
       flowRecordList: [], // 流程流转数据
       formConfCopy: {},
       src: null,
-      rules: {}, // 表单校验
       variablesForm: {}, // 流程变量数据
       taskForm:{
         returnTaskShow: false, // 是否展示回退表单
