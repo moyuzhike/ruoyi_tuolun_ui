@@ -1,5 +1,5 @@
-import testDongtai from "../../views/testDongtai";
 import { deepClone } from '@/utils/index'
+import DynamicSelect from "@/components/biz/DynamicSelect";
 
 const componentChild = {}
 /**
@@ -67,6 +67,10 @@ function buildDataObject(confClone, dataObject) {
     }
   })
 
+  // 添加额外的自定义的参数传给子组件
+  //在prop 中传入当前组件所有的config 配置
+  dataObject.props.conf = confClone
+
   // 清理属性
   clearAttrs(dataObject)
 }
@@ -97,13 +101,11 @@ function makeDataObject() {
   }
 }
 
+
 export default {
-
-  //此处为添加
-  components:{
-    testDongtai
+  comments:{
+    DynamicSelect
   },
-
   props: {
     conf: {
       type: Object,

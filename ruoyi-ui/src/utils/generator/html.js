@@ -285,11 +285,15 @@ const tags = {
     if (child) child = `\n${child}\n` // 换行
     return `<${tag} ${ref} ${fileList} ${action} ${autoUpload} ${multiple} ${beforeUpload} ${listType} ${accept} ${name} ${disabled}>${child}</${tag}>`
   },
+  'dynamic-select': el => {
+    const {tag, vModel, placeholder, width} = attrBuilder(el)
+    return `<${tag} ${placeholder}  ${vModel}></${tag}>`
+  },
   tinymce: el => {
-    const { tag, vModel, placeholder } = attrBuilder(el)
+    const { tag, vModel, placeholder, width } = attrBuilder(el)
     const height = el.height ? `:height="${el.height}"` : ''
     const branding = el.branding ? `:branding="${el.branding}"` : ''
-    return `<${tag} ${vModel} ${placeholder} ${height} ${branding}></${tag}>`
+    return `<${tag} ${vModel} ${placeholder} ${height} ${width} ${branding}></${tag}>`
   }
 }
 

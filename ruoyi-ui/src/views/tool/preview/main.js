@@ -2,8 +2,11 @@ import Vue from 'vue'
 import { loadScriptQueue } from '@/utils/loadScript'
 import axios from 'axios'
 import Tinymce from '@/components/tinymce/index.vue'
+import DynamicSelect from "@/components/biz/DynamicSelect";
+
 
 Vue.component('tinymce', Tinymce)
+Vue.component('dynamic-select', DynamicSelect)
 Vue.prototype.$axios = axios
 
 const $previewApp = document.getElementById('previewApp')
