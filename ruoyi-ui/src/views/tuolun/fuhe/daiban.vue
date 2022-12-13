@@ -1,28 +1,28 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="名称" prop="name">
-        <el-input
-          v-model="queryParams.name"
-          placeholder="请输入名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="开始时间" prop="deployTime">
-        <el-date-picker clearable size="small"
-                        v-model="queryParams.deployTime"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="选择时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+<!--    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">-->
+<!--      <el-form-item label="名称" prop="name">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.name"-->
+<!--          placeholder="请输入名称"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="开始时间" prop="deployTime">-->
+<!--        <el-date-picker clearable size="small"-->
+<!--                        v-model="queryParams.deployTime"-->
+<!--                        type="date"-->
+<!--                        value-format="yyyy-MM-dd"-->
+<!--                        placeholder="选择时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -42,20 +42,15 @@
 
     <el-table v-loading="loading" :data="todoList" border @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="任务编号" align="center" prop="taskId" :show-overflow-tooltip="true"/>
-      <el-table-column label="流程名称" align="center" prop="procDefName"/>
+
+      <el-table-column label="船名" align="center" prop="tugFeeVo.shipName" :show-overflow-tooltip="true"/>
+      <el-table-column label="总长" align="center" prop="tugFeeVo.length" :show-overflow-tooltip="true"/>
+      <el-table-column label="船舶类型" align="center" prop="tugFeeVo.shipType" :show-overflow-tooltip="true"/>
       <el-table-column label="任务节点" align="center" prop="taskName"/>
-      <el-table-column label="流程版本" align="center">
-        <template slot-scope="scope">
-          <el-tag size="medium" >v{{scope.row.procDefVersion}}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="流程发起人" align="center">
-        <template slot-scope="scope">
-          <label>{{scope.row.startUserName}} <el-tag type="info" size="mini">{{scope.row.startDeptName}}</el-tag></label>
-        </template>
-      </el-table-column>
-      <el-table-column label="接收时间" align="center" prop="createTime" width="180"/>
+      <el-table-column label="计算费用" align="center" prop="tugFeeVo.caculateAmount"/>
+      <el-table-column label="实际费用" align="center" prop="tugFeeVo.amount"/>
+
+
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -148,7 +143,8 @@
             executionId: row.executionId,
             deployId: row.deployId,
             taskId: row.taskId,
-            finished: true
+            finished: true,
+            taskName:row.taskName
           }})
       },
       // 取消按钮

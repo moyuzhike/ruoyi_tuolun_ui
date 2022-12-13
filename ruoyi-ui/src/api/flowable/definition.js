@@ -120,3 +120,12 @@ export function exportDeployment(query) {
     params: query
   })
 }
+
+
+//动态获取计费员和复核员下拉框选项
+export function listpeopleOptions(role) {
+  return request({
+    url: '/api/user/getUserList?role='+role,
+    method: 'get',
+  })
+}

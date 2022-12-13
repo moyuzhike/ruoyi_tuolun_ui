@@ -10,6 +10,14 @@ export function myProcessList(query) {
   })
 }
 
+//申请时获取最新
+export function getLatestRecord() {
+  return request({
+    url: '/api/user/get',
+    method: 'get',
+  })
+}
+
 // 完成任务
 export function complete(data) {
   return request({

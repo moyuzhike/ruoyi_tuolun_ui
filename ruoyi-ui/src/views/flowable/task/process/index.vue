@@ -336,7 +336,8 @@ export default {
           procInsId: row.procInsId,
           deployId: row.deployId,
           taskId: row.taskId,
-          finished: false
+          finished: false,
+          taskName:row.taskName,
       }})
     },
     /** 修改按钮操作 */

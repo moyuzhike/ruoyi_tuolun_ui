@@ -78,3 +78,24 @@ export function exportDeployment(query) {
     params: query
   })
 }
+
+
+
+// 查询船代已办任务列表
+export function myfinishedList(query) {
+  return request({
+    url: '/api/user/finishedList',
+    method: 'get',
+    params: query
+  })
+}
+
+
+// 查询管理员流程所有信息任务列表
+export function adminfinishedList(query) {
+  return request({
+    url: '/api/admin/myProcess',
+    method: 'get',
+    params: query
+  })
+}

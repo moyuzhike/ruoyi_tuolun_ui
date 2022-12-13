@@ -209,7 +209,8 @@ export default {
           procInsId: row.procInsId,
           deployId: row.deployId,
           taskId: row.taskId,
-          finished: false
+          finished: false,
+          tasKName:row.taskName
       }})
     },
     /** 撤回任务 */

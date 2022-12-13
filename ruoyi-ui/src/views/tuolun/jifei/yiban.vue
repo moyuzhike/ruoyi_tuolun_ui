@@ -1,28 +1,28 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="名称" prop="name">
-        <el-input
-          v-model="queryParams.name"
-          placeholder="请输入名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="开始时间" prop="deployTime">
-        <el-date-picker clearable size="small"
-                        v-model="queryParams.deployTime"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="选择时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+<!--    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">-->
+<!--      <el-form-item label="名称" prop="name">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.name"-->
+<!--          placeholder="请输入名称"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="开始时间" prop="deployTime">-->
+<!--        <el-date-picker clearable size="small"-->
+<!--                        v-model="queryParams.deployTime"-->
+<!--                        type="date"-->
+<!--                        value-format="yyyy-MM-dd"-->
+<!--                        placeholder="选择时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -40,18 +40,17 @@
     </el-row>
 
     <el-table v-loading="loading" :data="finishedList" border @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="任务编号" align="center" prop="taskId" :show-overflow-tooltip="true"/>
-      <el-table-column label="流程名称" align="center" prop="procDefName" :show-overflow-tooltip="true"/>
-      <el-table-column label="任务节点" align="center" prop="taskName" />
-      <el-table-column label="流程发起人" align="center">
-        <template slot-scope="scope">
-          <label>{{scope.row.startUserName}} <el-tag type="info" size="mini">{{scope.row.startDeptName}}</el-tag></label>
-        </template>
-      </el-table-column>
-      <el-table-column label="接收时间" align="center" prop="createTime" width="180"/>
-      <el-table-column label="审批时间" align="center" prop="finishTime" width="180"/>
-      <el-table-column label="耗时" align="center" prop="duration" width="180"/>
+
+      <el-table-column label="船名" align="center" prop="tugFeeVo.shipName" :show-overflow-tooltip="true"/>
+      <el-table-column label="总长(单位:米)" align="center" prop="tugFeeVo.length" />
+      <el-table-column label="船舶类型" align="center" prop="tugFeeVo.shipType" />
+      <el-table-column label="任务节点" align="center" prop="tugFeeVo.taskName" width="180"/>
+      <el-table-column label="工作内容" align="center" prop="tugFeeVo.workType" :show-overflow-tooltip="true"/>
+      <el-table-column label="拖轮数" align="center" prop="tugFeeVo.tugNum" :show-overflow-tooltip="true"/>
+      <el-table-column label="工作地点" align="center" prop="tugFeeVo.workPlace" :show-overflow-tooltip="true"/>
+      <el-table-column label="工作时间" align="center" prop="tugFeeVo.workTime" width="180"/>
+      <el-table-column label="审批时间" align="center" prop="tugFeeVo.caculateTime" width="180"/>
+
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -60,13 +59,7 @@
             icon="el-icon-tickets"
             @click="handleFlowRecord(scope.row)"
           >流转记录</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-tickets"
-            @click="handleRevoke(scope.row)"
-          >撤回
-          </el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -82,10 +75,10 @@
 </template>
 
 <script>
-  import { finishedList, getDeployment, delDeployment, addDeployment, updateDeployment, exportDeployment, revokeProcess } from "@/api/flowable/finished";
+  import { finishedList, getDeployment, delDeployment, addDeployment, updateDeployment, exportDeployment } from "@/api/flowable/finished";
 
   export default {
-    name: "yiban",
+    name: "Deploy",
     components: {
     },
     data() {
@@ -212,16 +205,7 @@
             finished: false
           }})
       },
-      /** 撤回任务 */
-      handleRevoke(row){
-        const params = {
-          instanceId: row.procInsId
-        }
-        revokeProcess(params).then( res => {
-          this.msgSuccess(res.msg);
-          this.getList();
-        });
-      },
+
       /** 修改按钮操作 */
       handleUpdate(row) {
         this.reset();
@@ -266,19 +250,7 @@
           this.msgSuccess("删除成功");
         })
       },
-      /** 导出按钮操作 */
-      handleExport() {
-        const queryParams = this.queryParams;
-        this.$confirm('是否确认导出所有流程定义数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return exportDeployment(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-        })
-      }
+
     }
   };
 </script>
