@@ -157,9 +157,51 @@ export const selectComponents = [
   {
     __config__: {
       label: '下拉选择',
+      url: 'https://www.fastmock.site/mock/f8d7a54fb1e60561e2f720d5a810009d/fg/cascaderList',
+      method: 'get',
+      dataPath: 'list',
+      dataConsumer: 'options',
+      dictKey :'sys_user_sex',
+      dataType: 'dynamic',
       showLabel: true,
       labelWidth: null,
       tag: 'el-select',
+      tagIcon: 'select',
+      layout: 'colFormItem',
+      span: 24,
+      required: true,
+      regList: [],
+      changeTag: true,
+      document: 'https://element.eleme.cn/#/zh-CN/component/select'
+    },
+    __slot__: {
+      options: [{
+        label: '选项一',
+        value: 1
+      }, {
+        label: '选项二',
+        value: 2
+      }]
+    },
+    placeholder: '请选择',
+    style: {width: '100%'},
+    clearable: true,
+    disabled: false,
+    filterable: false,
+    multiple: false
+  },
+  {
+    __config__: {
+      label: '动态下拉选择',
+      url: 'mock/f8d7a54fb1e60561e2f720d5a810009d/fg/cascaderList',
+      method: 'get',
+      code:'',
+      dataConsumer: 'options',
+      dictKey :'sys_user_sex',
+      dataType: 'dynamic',
+      showLabel: true,
+      labelWidth: null,
+      tag: 'dynamic-select',
       tagIcon: 'select',
       layout: 'colFormItem',
       span: 24,

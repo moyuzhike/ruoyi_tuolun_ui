@@ -417,6 +417,110 @@
             <el-divider />
           </template>
 
+          <template v-if="['dynamic-select'].includes(activeData.__config__.tag)">
+            <el-divider>选项</el-divider>
+            <el-form-item v-if="activeData.__config__.dataType" label="数据类型">
+              <el-radio-group v-model="activeData.__config__.dataType" size="small">
+                <el-radio-button label="dynamic">
+                  动态数据
+                </el-radio-button>
+                <el-radio-button label="static">
+                  静态数据
+                </el-radio-button>
+                <el-radio-button label="dict">
+                  数据字典
+                </el-radio-button>
+              </el-radio-group>
+            </el-form-item>
+
+            <template v-if="activeData.__config__.dataType === 'dynamic'">
+              <el-form-item label="接口地址">
+                <el-input
+                  v-model="activeData.__config__.url"
+                  :title="activeData.__config__.url"
+                  placeholder="请输入接口地址"
+                  clearable
+                  @blur="$emit('fetch-data', activeData)"
+                >
+                  <el-select
+                    slot="prepend"
+                    v-model="activeData.__config__.method"
+                    :style="{width: '85px'}"
+                    @change="$emit('fetch-data', activeData)"
+                  >
+                    <el-option label="get" value="get" />
+                    <el-option label="post" value="post" />
+                    <el-option label="put" value="put" />
+                    <el-option label="delete" value="delete" />
+                  </el-select>
+                </el-input>
+              </el-form-item>
+              <el-form-item label="处理逻辑">
+                <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 2, maxRows: 40}"
+                  placeholder="请输入处理逻辑,接口返回参数为res"
+                  v-model="activeData.__config__.code">
+                </el-input>
+              </el-form-item>
+
+              <template v-if="activeData.props && activeData.props.props">
+                <el-form-item label="标签键名">
+                  <el-input v-model="activeData.props.props.label" placeholder="请输入标签键名" />
+                </el-form-item>
+                <el-form-item label="值键名">
+                  <el-input v-model="activeData.props.props.value" placeholder="请输入值键名" />
+                </el-form-item>
+                <el-form-item label="子级键名">
+                  <el-input v-model="activeData.props.props.children" placeholder="请输入子级键名" />
+                </el-form-item>
+              </template>
+            </template>
+            <template v-if="activeData.__config__.dataType === 'static'">
+              <draggable
+                :list="activeData.__slot__.options"
+                :animation="340"
+                group="selectItem"
+                handle=".option-drag"
+              >
+                <div v-for="(item, index) in activeData.__slot__.options" :key="index" class="select-item">
+                  <div class="select-line-icon option-drag">
+                    <i class="el-icon-s-operation" />
+                  </div>
+                  <el-input v-model="item.label" placeholder="选项名" size="small" />
+                  <el-input
+                    placeholder="选项值"
+                    size="small"
+                    :value="item.value"
+                    @input="setOptionValue(item, $event)"
+                  />
+                  <div class="close-btn select-line-icon" @click="activeData.__slot__.options.splice(index, 1)">
+                    <i class="el-icon-remove-outline" />
+                  </div>
+                </div>
+              </draggable>
+              <div style="margin-left: 20px;">
+                <el-button
+                  style="padding-bottom: 0"
+                  icon="el-icon-circle-plus-outline"
+                  type="text"
+                  @click="addSelectItem"
+                >
+                  添加选项
+                </el-button>
+              </div>
+            </template>
+            <template v-if="activeData.__config__.dataType === 'dict'">
+              <el-form-item  label="字典Key">
+                <el-input
+                  v-model="activeData.__config__.dictKey"
+                  placeholder="请输入字典Key"
+                />
+              </el-form-item>
+            </template>
+            <el-divider />
+          </template>
+
           <el-form-item v-if="activeData.__config__.optionType !== undefined" label="选项样式">
             <el-radio-group v-model="activeData.__config__.optionType">
               <el-radio-button label="default">

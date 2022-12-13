@@ -20,7 +20,7 @@ import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, 
 import Pagination from "@/components/Pagination";
 // 自定义表格工具扩展
 import RightToolbar from "@/components/RightToolbar"
-
+import DynamicSelect from "@/components/biz/DynamicSelect";
 
 
 //此处为添加
@@ -53,6 +53,7 @@ Vue.prototype.msgInfo = function (msg) {
 Vue.component('Pagination', Pagination)
 Vue.component('RightToolbar', RightToolbar)
 Vue.component('testDongtai',testDongtai)
+Vue.component('dynamic-select', DynamicSelect)
 Vue.use(permission)
 
 /**
