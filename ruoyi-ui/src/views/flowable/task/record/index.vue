@@ -67,10 +67,38 @@
                     <template slot="label"><i class="el-icon-time"></i>耗时</template>
                     {{item.duration}}
                   </el-descriptions-item>
-                  <el-descriptions-item v-if="item.comment" label-class-name="my-label">
-                    <template slot="label"><i class="el-icon-tickets"></i>处理意见</template>
-                    {{item.comment.comment}}
+<!--                  <el-descriptions-item v-if="item.comment" label-class-name="my-label">-->
+<!--                    <template slot="label"><i class="el-icon-tickets"></i>处理意见</template>-->
+<!--                    {{item.comment.comment}}-->
+<!--                  </el-descriptions-item>-->
+<!--
+jifeuyuan
+shenheyuan
+guanliyuan
+
+commentData
+caculatorName reviewName amount caculatorComment reviewComment
+-->
+
+                  <el-descriptions-item v-if="item.taskName==='计费员'" label-class-name="my-label">
+                    <template slot="label"><i class="el-icon-tickets"></i>计费员备注</template>
+                    {{item.commentData.calculatorComment}}
                   </el-descriptions-item>
+                  <el-descriptions-item v-if="item.taskName==='计费员'" label-class-name="my-label">
+                    <template slot="label"><i class="el-icon-tickets"></i>计费金额</template>
+                    {{item.commentData.amount}}
+                  </el-descriptions-item>
+
+                  <el-descriptions-item v-if="item.taskName==='审核员'" label-class-name="my-label">
+                    <template slot="label"><i class="el-icon-tickets"></i>复核员备注</template>
+                    {{item.commentData.reviewerComment}}
+                  </el-descriptions-item>
+
+<!--                  <el-descriptions-item v-if="item.taskName==='船代'" label-class-name="my-label">-->
+<!--                    <template slot="label"><i class="el-icon-tickets"></i>船代备注</template>-->
+<!--                    {{item.commentData.applicantComment}}-->
+<!--                  </el-descriptions-item>-->
+
 
                 </el-descriptions>
 
@@ -445,7 +473,7 @@
         }
         stopProcess(params).then(res => {
           this.msgSuccess(res.msg);
-          this.getList();
+          this.goBack();
         });
       },
 
@@ -544,6 +572,7 @@
       /** 流程流转记录 */
       getFlowRecordList(procInsId, deployId) {
         const params = {procInsId: procInsId, deployId: deployId}
+
         flowRecord(params).then(res => {
           this.flowRecordList = res.data.flowList;
           // 流程过程中不存在初始化表单 直接读取的流程变量中存储的表单值
@@ -609,6 +638,10 @@
         this.completeTitle = "审批流程";
         this.getTreeselect();
       },
+
+
+
+
       /** 审批任务 */
       taskComplete() {
         if (!this.taskForm.values && this.checkSendUser) {
@@ -638,6 +671,9 @@
             this.goBack();})
 
       },
+
+
+
 
 
       /** 委派任务 */
