@@ -24,20 +24,20 @@
 <!--      </el-form-item>-->
 <!--    </el-form>-->
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:deployment:remove']"
-        >删除</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+<!--    <el-row :gutter="10" class="mb8">-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-delete"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleDelete"-->
+<!--          v-hasPermi="['system:deployment:remove']"-->
+<!--        >删除</el-button>-->
+<!--      </el-col>-->
+<!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
+<!--    </el-row>-->
 
     <el-table v-loading="loading" :data="finishedList" border @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
