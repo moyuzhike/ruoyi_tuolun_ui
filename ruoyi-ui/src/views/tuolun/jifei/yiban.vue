@@ -44,7 +44,7 @@
       <el-table-column label="船名" align="center" prop="tugFeeVo.shipName" :show-overflow-tooltip="true"/>
       <el-table-column label="总长(单位:米)" align="center" prop="tugFeeVo.length" />
       <el-table-column label="船舶类型" align="center" prop="tugFeeVo.shipType" />
-      <el-table-column label="任务节点" align="center" prop="tugFeeVo.taskName" width="180"/>
+      <el-table-column label="任务节点" align="center" prop="taskName" width="180"/>
       <el-table-column label="工作内容" align="center" prop="tugFeeVo.workType" :show-overflow-tooltip="true"/>
       <el-table-column label="拖轮数" align="center" prop="tugFeeVo.tugNum" :show-overflow-tooltip="true"/>
       <el-table-column label="工作地点" align="center" prop="tugFeeVo.workPlace" :show-overflow-tooltip="true"/>

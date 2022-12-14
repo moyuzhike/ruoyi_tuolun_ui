@@ -186,7 +186,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="应付金额" prop="field101"   v-if="taskName === `计费员`"  >
+        <el-form-item label="应付金额" prop="field101"   v-if="taskName === `计费员`"   :rules="{required:true,message:'此项必填',trigger:blur}" >
           <el-input type="number"  @keyup.native="prevent($event)" v-model="taskForm.commentData.amount"    label="请输入应付金额"></el-input>
         </el-form-item>
 
@@ -441,7 +441,7 @@
 
       handleStop() {
         const params = {
-          instanceId: this.procInsId
+          instanceId: this.taskForm.procInsId
         }
         stopProcess(params).then(res => {
           this.msgSuccess(res.msg);
@@ -619,11 +619,27 @@
         //   this.msgError("请输入审批意见");
         //   return;
         // }
+
+        // this.$refs["taskForm"].validate(validate=>{
+        //   if(!validate) {
+        //     console.log(validate)
+        //     alert("表单不合格")
+        //     return;}
+        //   if(validate){
+        //     complete(this.taskForm).then(response => {
+        //       this.msgSuccess(response.msg);
+        //       this.goBack();
+        //     });
+        //   }
+        // })
+
         complete(this.taskForm).then(response => {
-          this.msgSuccess(response.msg);
-          this.goBack();
-        });
+            this.msgSuccess(response.msg);
+            this.goBack();})
+
       },
+
+
       /** 委派任务 */
       handleDelegate() {
         this.taskForm.delegateTaskShow = true;

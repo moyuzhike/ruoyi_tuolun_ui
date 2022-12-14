@@ -136,7 +136,7 @@
       },
       // 跳转到处理页面
       handleProcess(row){
-        this.$.push({ path: '/flowable/task/record/index',
+        this.$router.push({ path: '/flowable/task/record/index',
           query: {
             procInsId: row.procInsId,
             executionId: row.executionId,

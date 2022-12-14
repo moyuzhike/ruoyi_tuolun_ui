@@ -50,7 +50,7 @@
       <el-table-column label="拖轮数" align="center" prop="tugFeeVo.tugNum" :show-overflow-tooltip="true"/>
       <el-table-column label="工作地点" align="center" prop="tugFeeVo.workPlace" :show-overflow-tooltip="true"/>
       <el-table-column label="工作时间" align="center" prop="tugFeeVo.workTime" width="180"/>
-      <el-table-column label="任务节点" align="center" prop="tugFeeVo.taskName" width="180"/>
+      <el-table-column label="任务节点" align="center" prop="taskName" width="180"/>
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">

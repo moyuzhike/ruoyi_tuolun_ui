@@ -41,15 +41,15 @@
 
     <el-table v-loading="loading" :data="finishedList" border @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="船名" align="center" prop="shipName" :show-overflow-tooltip="true"/>
-      <el-table-column label="总长(单位:米)" align="center" prop="length" />
-      <el-table-column label="船舶类型" align="center" prop="shipType" />
+      <el-table-column label="船名" align="center" prop="tugFeeVo.shipName" :show-overflow-tooltip="true"/>
+      <el-table-column label="总长(单位:米)" align="center" prop="tugFeeVo.length" />
+      <el-table-column label="船舶类型" align="center" prop="tugFeeVo.shipType" />
       <el-table-column label="任务节点" align="center" prop="taskName" width="180"/>
-      <el-table-column label="工作内容" align="center" prop="workType" :show-overflow-tooltip="true"/>
-      <el-table-column label="拖轮数" align="center" prop="tugNum" :show-overflow-tooltip="true"/>
-      <el-table-column label="工作地点" align="center" prop="workPlace" :show-overflow-tooltip="true"/>
-      <el-table-column label="工作时间" align="center" prop="workTime" width="180"/>
-      <el-table-column label="审批时间" align="center" prop="reviewTime" width="180"/>
+      <el-table-column label="工作内容" align="center" prop="tugFeeVo.workType" :show-overflow-tooltip="true"/>
+      <el-table-column label="拖轮数" align="center" prop="tugFeeVo.tugNum" :show-overflow-tooltip="true"/>
+      <el-table-column label="工作地点" align="center" prop="tugFeeVo.workPlace" :show-overflow-tooltip="true"/>
+      <el-table-column label="工作时间" align="center" prop="tugFeeVo.workTime" width="180"/>
+      <el-table-column label="审批时间" align="center" prop="tugFeeVo.reviewTime" width="180"/>
 
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
