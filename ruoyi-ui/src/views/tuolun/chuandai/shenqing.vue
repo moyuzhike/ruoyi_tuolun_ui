@@ -28,19 +28,6 @@
 <!--        </el-date-picker>-->
 <!--      </el-form-item>-->
 
-
-<!--&lt;!&ndash;      <el-form-item label="作业时间">&ndash;&gt;-->
-<!--&lt;!&ndash;        <el-date-picker&ndash;&gt;-->
-<!--&lt;!&ndash;          v-model="dateRange"&ndash;&gt;-->
-<!--&lt;!&ndash;          size="small"&ndash;&gt;-->
-<!--&lt;!&ndash;          style="width: 240px"&ndash;&gt;-->
-<!--&lt;!&ndash;          value-format="yyyy-MM-dd"&ndash;&gt;-->
-<!--&lt;!&ndash;          type="daterange"&ndash;&gt;-->
-<!--&lt;!&ndash;          range-separator="-"&ndash;&gt;-->
-<!--&lt;!&ndash;          start-placeholder="开始日期"&ndash;&gt;-->
-<!--&lt;!&ndash;          end-placeholder="结束日期"&ndash;&gt;-->
-<!--&lt;!&ndash;        ></el-date-picker>&ndash;&gt;-->
-<!--&lt;!&ndash;      </el-form-item>&ndash;&gt;-->
 <!--      <el-form-item>-->
 <!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
 <!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
