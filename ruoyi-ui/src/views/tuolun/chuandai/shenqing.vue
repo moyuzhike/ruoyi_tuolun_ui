@@ -1,38 +1,5 @@
 <template>
   <div class="app-container">
-<!--    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">-->
-<!--      <el-form-item label="船名" prop="ship_name">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.ship_name"-->
-<!--          placeholder="请输入名称"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="船舶类型" prop="ship_type">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.ship_type"-->
-<!--          placeholder="船舶类型"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="开始时间" prop="deployTime">-->
-<!--        <el-date-picker clearable size="small"-->
-<!--                        v-model="queryParams.deployTime"-->
-<!--                        type="date"-->
-<!--                        value-format="yyyy-MM-dd"-->
-<!--                        placeholder="选择时间">-->
-<!--        </el-date-picker>-->
-<!--      </el-form-item>-->
-
-<!--      <el-form-item>-->
-<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
-<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
-<!--      </el-form-item>-->
-<!--    </el-form>-->
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -45,27 +12,7 @@
           v-hasPermi="['system:deployment:add']"
         >新增申请</el-button>
       </el-col>
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="danger"-->
-<!--          plain-->
-<!--          icon="el-icon-delete"-->
-<!--          size="mini"-->
-<!--          :disabled="multiple"-->
-<!--          @click="handleDelete"-->
-<!--          v-hasPermi="['system:deployment:remove']"-->
-<!--        >删除</el-button>-->
-<!--      </el-col>-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="warning"-->
-<!--          plain-->
-<!--          icon="el-icon-download"-->
-<!--          size="mini"-->
-<!--          @click="handleExport"-->
-<!--          v-hasPermi="['system:deployment:export']"-->
-<!--        >导出</el-button>-->
-<!--      </el-col>-->
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 

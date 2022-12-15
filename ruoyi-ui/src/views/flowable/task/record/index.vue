@@ -13,9 +13,6 @@
         </div>
         <div style="margin-left:10%;margin-bottom: 20px;font-size: 14px;" v-if="finished === 'true'">
           <el-button  icon="el-icon-edit-outline" type="success" size="mini" @click="handleComplete">审批</el-button>
-          <!--                <el-button  icon="el-icon-edit-outline" type="primary" size="mini" @click="handleDelegate">委派</el-button>-->
-          <!--                <el-button  icon="el-icon-edit-outline" type="primary" size="mini" @click="handleAssign">转办</el-button>-->
-          <!--                <el-button  icon="el-icon-edit-outline" type="primary" size="mini" @click="handleDelegate">签收</el-button>-->
           <el-button  icon="el-icon-refresh-left" type="warning" size="mini" @click="handleStop" v-if="taskName ==='管理员'">终止</el-button>
           <el-button  icon="el-icon-circle-close" type="danger" size="mini" @click="handleReject" v-if="taskName !=='管理员'">驳回</el-button>
         </div>
@@ -67,18 +64,41 @@
                     <template slot="label"><i class="el-icon-time"></i>耗时</template>
                     {{item.duration}}
                   </el-descriptions-item>
+
+
+                  <el-descriptions-item
+                    v-if="item.comment"
+                    label-class-name="my-label"
+                  >
+                    <template slot="label"
+                    ><i class="el-icon-tickets"></i>处理类型</template
+                    >
+                    <p>
+                      <el-tag type="success" v-if="item.comment.type === '1'">
+                        通过
+                      </el-tag>
+                      <el-tag type="warning" v-if="item.comment.type === '2'">
+                        退回
+                      </el-tag>
+                      <el-tag type="danger" v-if="item.comment.type === '3'">
+                        驳回
+                      </el-tag>
+                    </p>
+                  </el-descriptions-item>
 <!--                  <el-descriptions-item v-if="item.comment" label-class-name="my-label">-->
 <!--                    <template slot="label"><i class="el-icon-tickets"></i>处理意见</template>-->
 <!--                    {{item.comment.comment}}-->
 <!--                  </el-descriptions-item>-->
-<!--
-jifeuyuan
-shenheyuan
-guanliyuan
 
-commentData
-caculatorName reviewName amount caculatorComment reviewComment
--->
+
+                  <!--
+                  jifeuyuan
+                  shenheyuan
+                  guanliyuan
+
+                  commentData
+                  caculatorName reviewName amount caculatorComment reviewComment
+                  -->
 
                   <el-descriptions-item v-if="item.taskName==='计费员'" label-class-name="my-label">
                     <template slot="label"><i class="el-icon-tickets"></i>计费员备注</template>
@@ -94,10 +114,15 @@ caculatorName reviewName amount caculatorComment reviewComment
                     {{item.commentData.reviewerComment}}
                   </el-descriptions-item>
 
-<!--                  <el-descriptions-item v-if="item.taskName==='船代'" label-class-name="my-label">-->
-<!--                    <template slot="label"><i class="el-icon-tickets"></i>船代备注</template>-->
-<!--                    {{item.commentData.applicantComment}}-->
-<!--                  </el-descriptions-item>-->
+                  <el-descriptions-item v-if="item.taskName==='船代'" label-class-name="my-label">
+                    <template slot="label"><i class="el-icon-tickets"></i>船代备注</template>
+                    {{item.commentData.reviewerComment}}
+                  </el-descriptions-item>
+
+                  <!--                  <el-descriptions-item v-if="item.taskName==='船代'" label-class-name="my-label">-->
+                  <!--                    <template slot="label"><i class="el-icon-tickets"></i>船代备注</template>-->
+                  <!--                    {{item.commentData.applicantComment}}-->
+                  <!--                  </el-descriptions-item>-->
 
 
                 </el-descriptions>
@@ -177,27 +202,6 @@ caculatorName reviewName amount caculatorComment reviewComment
         </el-form-item>
 
 
-        <!--        <el-form-item label="计费员" prop="field101">-->
-        <!--          <el-select v-model="formData.field101" placeholder="请选择计费员" clearable :style="{width: '100%'}">-->
-        <!--            <el-option v-for="(item, index) in field101Options" :key="index" :label="item.label"-->
-        <!--                       :value="item.value" :disabled="item.disabled"></el-option>-->
-        <!--          </el-select>-->
-        <!--        </el-form-item>-->
-
-        <!--        <el-form-item label="复核员" prop="field103">-->
-        <!--          <el-select v-model="formData.field103" placeholder="请选择复核员" clearable :style="{width: '100%'}">-->
-        <!--            <el-option v-for="(item, index) in field103Options" :key="index" :label="item.label"-->
-        <!--                       :value="item.value" :disabled="item.disabled"></el-option>-->
-        <!--          </el-select>-->
-        <!--        </el-form-item>-->
-
-        <!--        <el-form-item label="实际费用"  :rules="[{ message: '请输入实际费用', trigger: 'blur' }]">-->
-        <!--          <el-input type="text" v-model="taskForm.payprice" placeholder="实际费用"/>-->
-        <!--        </el-form-item>-->
-
-        <!--        <el-form-item label="处理意见" prop="comment" :rules="[{ message: '请输入处理意见', trigger: 'blur' }]">-->
-        <!--          <el-input type="textarea" v-model="taskForm.comment" placeholder="请输入处理意见"/>-->
-        <!--        </el-form-item>-->
 
 
         <!--        修改项-->
@@ -214,24 +218,22 @@ caculatorName reviewName amount caculatorComment reviewComment
           </el-select>
         </el-form-item>
 
-        <el-form-item label="应付金额" prop="field101"   v-if="taskName === `计费员`"   :rules="{required:true,message:'此项必填',trigger:blur}" >
+        <el-form-item label="应付金额" prop="commentData.amount"   v-if="taskName === `计费员`"   :rules="{required:true,message:'此项必填',trigger:blur}" >
           <el-input type="number"  @keyup.native="prevent($event)" v-model="taskForm.commentData.amount"    label="请输入应付金额"></el-input>
         </el-form-item>
 
-        <el-form-item label="计费员处理意见" prop="comment"  :rules="[{ required: true, message: '请输入处理意见', trigger: 'blur' }]" v-if="taskName === `计费员`">
+        <el-form-item label="计费员处理意见" prop="commentData.calculatorComment"   v-if="taskName === `计费员`">
           <el-input type="textarea" v-model="taskForm.commentData.calculatorComment" placeholder="请输入处理意见"/>
         </el-form-item>
 
 
-        <el-form-item label="审批员处理意见" prop="comment" :rules="[{ required: true, message: '请输入处理意见', trigger: 'blur' }]" v-if="taskName === `审核员`">
+        <el-form-item label="审批员处理意见" prop="commentData.reviewerComment"  v-if="taskName === `审核员`">
           <el-input type="textarea" v-model="taskForm.commentData.reviewerComment" placeholder="请输入处理意见"/>
         </el-form-item>
 
-        <el-form-item label="船代处理意见" prop="comment" :rules="[{ required: true, message: '请输入处理意见', trigger: 'blur' }]" v-if="taskName === `船代`">
+        <el-form-item label="船代处理意见" prop="commentData.applicantComment"  v-if="taskName === `船代`">
           <el-input type="textarea" v-model="taskForm.commentData.applicantComment" placeholder="请输入处理意见"/>
         </el-form-item>
-
-
 
 
       </el-form>
@@ -241,35 +243,32 @@ caculatorName reviewName amount caculatorComment reviewComment
       </span>
     </el-dialog>
 
-    <!--    &lt;!&ndash;退回流程&ndash;&gt;-->
-    <!--    <el-dialog :title="returnTitle" :visible.sync="returnOpen" width="40%" append-to-body>-->
-    <!--        <el-form ref="taskForm" :model="taskForm" label-width="80px" >-->
-    <!--            <el-form-item label="退回节点" prop="targetKey">-->
-    <!--              <el-radio-group v-model="taskForm.targetKey">-->
-    <!--                <el-radio-button-->
-    <!--                  v-for="item in returnTaskList"-->
-    <!--                  :key="item.id"-->
-    <!--                  :label="item.id"-->
-    <!--                >{{item.name}}</el-radio-button>-->
-    <!--              </el-radio-group>-->
-    <!--            </el-form-item>-->
-    <!--          <el-form-item label="退回意见" prop="comment" :rules="[{ required: true, message: '请输入', trigger: 'blur' }]">-->
-    <!--            <el-input style="width: 50%" type="textarea" v-model="taskForm.comment" placeholder="请输入意见"/>-->
-    <!--          </el-form-item>-->
-    <!--        </el-form>-->
-    <!--        <span slot="footer" class="dialog-footer">-->
-    <!--            <el-button @click="returnOpen = false">取 消</el-button>-->
-    <!--            <el-button type="primary" @click="taskReturn">确 定</el-button>-->
-    <!--        </span>-->
-    <!--    </el-dialog>-->
 
     <!--驳回流程-->
     <el-dialog :title="rejectTitle" :visible.sync="rejectOpen" width="40%" append-to-body >
       <el-form ref="taskForm" :model="taskForm" label-width="80px" >
-        <el-form-item label="驳回意见"   prop="comment" :rules="[{ required: true, message: '请输入意见', trigger: 'blur' }]">
-          <el-input style="width: 50%" type="textarea" v-model="taskForm.comment" placeholder="请输入意见"/>
+        <el-form-item label="计费员驳回意见"  v-if="taskName === `计费员`"    prop="commentData.calculatorComment" :rules="[{ required: true, message: '请输入意见', trigger: 'blur' }]">
+          <el-input style="width: 50%" type="textarea" v-model="taskForm.commentData.calculatorComment" placeholder="请输入意见"/>
+        </el-form-item>
+        <el-form-item label="复核员驳回意见"  v-if="taskName === `审核员`"    prop="commentData.reviewerComment" :rules="[{ required: true, message: '请输入意见', trigger: 'blur' }]">
+          <el-input style="width: 50%" type="textarea" v-model="taskForm.commentData.reviewerComment" placeholder="请输入意见"/>
+        </el-form-item>
+
+        <el-form-item label="船代驳回意见"  v-if="taskName === `船代`"    prop="commentData.applicantComment" :rules="[{ required: true, message: '请输入意见', trigger: 'blur' }]">
+          <el-input style="width: 50%" type="textarea" v-model="taskForm.commentData.applicantComment" placeholder="请输入意见"/>
         </el-form-item>
       </el-form>
+
+
+<!--      <el-descriptions-item v-if="item.taskName==='计费员'" label-class-name="my-label">-->
+<!--        <template slot="label"><i class="el-icon-tickets"></i>计费员驳回意见</template>-->
+<!--        {{item.commentData.calculatorComment}}-->
+<!--      </el-descriptions-item>-->
+
+<!--      <el-descriptions-item v-if="item.taskName==='审核员'" label-class-name="my-label">-->
+<!--        <template slot="label"><i class="el-icon-tickets"></i>复核员驳回意见</template>-->
+<!--        {{item.commentData.reviewerComment}}-->
+<!--      </el-descriptions-item>-->
       <span slot="footer" class="dialog-footer">
           <el-button @click="rejectOpen = false">取 消</el-button>
           <el-button type="primary" @click="taskReject">确 定</el-button>
@@ -667,8 +666,8 @@ caculatorName reviewName amount caculatorComment reviewComment
         // })
 
         complete(this.taskForm).then(response => {
-            this.msgSuccess(response.msg);
-            this.goBack();})
+          this.msgSuccess(response.msg);
+          this.goBack();})
 
       },
 
