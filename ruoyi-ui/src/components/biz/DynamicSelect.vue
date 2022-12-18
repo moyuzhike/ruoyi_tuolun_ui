@@ -68,12 +68,14 @@ export default {
       this.$emit('input', val)
     },
     value(val) {
+      console.log('value',val)
       this.input = val
     }
   },
   mounted() {
-    console.log("start")
+    console.log('mounted',this.value)
     this.getOptions()
+    this.input = this.value
   }
 }
 </script>

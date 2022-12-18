@@ -138,6 +138,7 @@ export default {
   },
   methods: {
     initFormData(componentList, formData) {
+      console.log('com', componentList, formData)
       componentList.forEach(cur => {
         const config = cur.__config__
         if (cur.__vModel__) formData[cur.__vModel__] = config.defaultValue
