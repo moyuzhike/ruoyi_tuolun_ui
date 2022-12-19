@@ -33,7 +33,6 @@ dist/
 nbdist/
 .nb-gradle/
 
-# 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
 
 ######################################################################
 # Others
@@ -44,3 +43,15 @@ nbdist/
 !*/build/*.java
 !*/build/*.html
 !*/build/*.xml
+
+ruoyi-admin/
+ruoyi-common/
+ruoyi-flowable/
+ruoyi-framework/
+ruoyi-generator/
+ruoyi-quartz/
+ruoyi-system/
+bin/
+
+pom.xml
+ry.sh

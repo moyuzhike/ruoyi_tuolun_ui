@@ -1,42 +1,37 @@
 <template>
   <el-select v-model="input" :placeholder=placeholder :filterable=filterable :style="style">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
+    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
     </el-option>
   </el-select>
 </template>
 
 
 <script>
-import {getDicts} from "@/api/system/dict/data";
+import { getDicts } from "@/api/system/dict/data";
 import request from "@/utils/request";
 
 export default {
   name: "DynamicSelect",
-  data(){
+  data() {
     return {
-      options:[],
-      input:''
+      options: [],
+      input: ''
     }
   },
-  props:{
-    filterable:false,
-    placeholder:'',
-    width:100,
-    style:{},
+  props: {
+    filterable: false,
+    placeholder: '',
+    width: 100,
+    style: {},
     value: {
-      default:''
+      default: ''
     },
-    conf:{
+    conf: {
       type: Object,
     },
   },
-  methods:{
+  methods: {
     getOptions() {
-      console.log("conf:", this.conf)
       this.options = []
       switch (this.conf.__config__.dataType) {
         case 'static':
@@ -45,7 +40,7 @@ export default {
         case 'dynamic':
           request({
             url: this.conf.__config__.url,
-            method:  this.conf.__config__.method,
+            method: this.conf.__config__.method,
           }).then(res => {
             let options = []
             eval(this.conf.__config__.code)
@@ -54,9 +49,8 @@ export default {
           break
         case 'dict':
           getDicts(this.conf.__config__.dictKey).then(res => {
-            console.log("res:", res)
             res.data.forEach(item => {
-              this.options.push({label:item.dictLabel, value:item.dictCode})
+              this.options.push({ label: item.dictLabel, value: item.dictCode })
             })
           })
           break
@@ -68,12 +62,10 @@ export default {
       this.$emit('input', val)
     },
     value(val) {
-      console.log('value',val)
       this.input = val
     }
   },
   mounted() {
-    console.log('mounted',this.value)
     this.getOptions()
     this.input = this.value
   }
