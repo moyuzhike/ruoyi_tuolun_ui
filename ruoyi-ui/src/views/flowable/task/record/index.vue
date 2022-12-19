@@ -146,7 +146,7 @@
     </el-card>
 
     <!--审批正常流程-->
-    <el-dialog :title="completeTitle" :visible.sync="completeOpen" :width="checkSendUser? '60%':'40%'" append-to-body>
+    <el-dialog :title="completeTitle" :visible.sync="completeOpen" :width="'50%'" append-to-body>
       <el-form ref="taskForm" :model="taskForm" label-width="80px" >
         <el-form-item  v-if="checkSendUser" prop="targetKey">
           <el-row :gutter="20">
@@ -232,7 +232,9 @@
         </el-form-item>
 
         <el-form-item label="船代处理意见" prop="commentData.applicantComment"  v-if="taskName === `船代`">
-          <el-input type="textarea" v-model="taskForm.commentData.applicantComment" placeholder="请输入处理意见"/>
+          <div style="width: 800px; height: 250px; border: 1px solid #000;">
+            <img :src="taskForm.commentData.applicantComment" alt="">
+          </div>
         </el-form-item>
 
 
@@ -240,6 +242,26 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="completeOpen = false">取 消</el-button>
         <el-button type="primary" @click="taskComplete">确 定</el-button>
+        <el-button v-if="taskName==='船代'" plain @click="dialogVisible = true" type="primary">点击签字</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog title="签字" :visible.sync="dialogVisible" width="800px" append-to-body>
+      <!-- 使用这个签名组件 -->
+      <vue-esign
+        ref="esign"
+        class="mySign"
+        :width="800"
+        :height="250"
+        :isCrop="isCrop"
+        :lineWidth="lineWidth"
+        :lineColor="lineColor"
+        :bgColor.sync="bgColor"
+      />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleGenerate" type="primary">生成签字图片</el-button>
+        <el-button @click="handleReset">清空画板</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
       </span>
     </el-dialog>
 
@@ -406,7 +428,12 @@
         rejectOpen: false,
         rejectTitle: null,
         userData: [],
-        checkSendUser: false // 是否展示选择人员模块
+        checkSendUser: false, // 是否展示选择人员模块
+        dialogVisible: false, // 弹框是否开启
+        lineWidth: 4, // 画笔的线条粗细
+        lineColor: "#000000", // 画笔的颜色
+        bgColor: "", // 画布的背景颜色
+        isCrop: false, // 是否裁剪，在画布设定尺寸基础上裁掉四周空白部分
       };
     },
     created() {
@@ -474,6 +501,35 @@
           this.goBack();
         });
       },
+
+      handleReset() {
+        this.$confirm('确认要清空签名吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$refs.esign.reset();
+        }).catch(() => {
+        });
+      },
+      // 生成签字图
+      handleGenerate() {
+        this.$refs.esign
+          .generate() // 使用生成器调用把签字的图片转换成为base64图片格式
+          .then((res) => {
+            this.taskForm.commentData.applicantComment = res;
+          })
+          .catch((err) => {
+            // 画布没有签字时会执行这里提示一下
+            this.$message({
+              type: "warning",
+              message: "请签名后再生成签字图片",
+            });
+          });
+
+        this.dialogVisible = false;
+      },
+
 
 
       prevent(e){
@@ -819,4 +875,12 @@
   .my-label {
     background: #E1F3D8;
   }
+</style>
+
+<style lang="less" scoped>
+/deep/ .el-dialog__body {
+  .mySign {
+    border: 1px dashed #000;
+  }
+}
 </style>

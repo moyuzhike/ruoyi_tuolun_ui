@@ -22,6 +22,8 @@ import Pagination from "@/components/Pagination";
 import RightToolbar from "@/components/RightToolbar"
 import DynamicSelect from "@/components/biz/DynamicSelect";
 
+import vueEsign from 'vue-esign'
+
 
 //此处为添加
 import testDongtai from "./views/testDongtai";
@@ -68,6 +70,8 @@ Vue.use(permission)
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
+
+Vue.use(vueEsign);
 
 Vue.config.productionTip = false
 

@@ -34,8 +34,8 @@ const layouts = {
     let child = renderChildren.apply(this, arguments)
     if (scheme.type === 'flex') {
       child = <el-row type={scheme.type} justify={scheme.justify} align={scheme.align}>
-              {child}
-            </el-row>
+        {child}
+      </el-row>
     }
     return (
       <el-col span={scheme.span}>
@@ -138,7 +138,6 @@ export default {
   },
   methods: {
     initFormData(componentList, formData) {
-      console.log('com', componentList, formData)
       componentList.forEach(cur => {
         const config = cur.__config__
         if (cur.__vModel__) formData[cur.__vModel__] = config.defaultValue
@@ -185,7 +184,7 @@ export default {
       })
     },
     // 传值给父组件
-    getData(){
+    getData() {
       debugger
       this.$emit('getData', this[this.formConf.formModel])
       // this.$emit('getData',this.formConfCopy)
